@@ -1,5 +1,5 @@
 import {Table, Column, DataType, HasMany, BelongsTo, ForeignKey} from "sequelize-typescript"
-import {Model} from "sequelize";
+import {Model} from "sequelize-typescript";
 
 //Nombre de la tabla
 @Table({
@@ -12,12 +12,6 @@ class Presupuesto extends Model {
 
     @Column({type: DataType.DECIMAL})
     monto: number;
-
-    @Column({type: DataType.DATE})
-    created_at: Date;
-
-    @Column({type: DataType.DATE})
-    updated_at: Date;
 }
 
 export default Presupuesto;

@@ -1,13 +1,20 @@
-import {Sequelize} from "sequelize";
+import {Sequelize} from "sequelize-typescript"
 import dotenv from "dotenv";
+import Presupuesto from "../models/Presupuesto";
 dotenv.config();
 
-const conexion = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
+const conexion = new Sequelize({
+    dialect: "mysql",
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT),
-    dialect: "mysql",
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    models: [Presupuesto],
     define: {
         timestamps: true
-    }
-});
+    },
+    logging: false
+})
+
 export default conexion;
