@@ -1,5 +1,5 @@
-import {Result, validationResult} from "express-validator";
 import Presupuesto from "../models/Presupuesto";
+import Gasto from "../models/Gasto";
 
 const prueba = (req, res) => {
     return res.status(200).json({
@@ -31,7 +31,9 @@ const findAll = async (req, res) => {
 const findById = async (req, res) => {
     try {
         const {id} = req.params;
-        const presupuestoToFound = await Presupuesto.findByPk(id);
+        const presupuestoToFound = await Presupuesto.findByPk(id, {
+            include: [{model: Gasto, attributes: ["id", "nombre", "monto", "updatedAt"]}]
+        });
         if (!presupuestoToFound) {
             return res.status(404).json({
                 error: "Presupuesto no encontrado"
