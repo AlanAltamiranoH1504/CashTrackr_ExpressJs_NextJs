@@ -1,7 +1,6 @@
 import express from "express";
 import {deleteById, findAll, findById, prueba, save, update} from "../controllers/PresupuestoController";
 import {findByIdPresupuesto, savePresupuesto, updatePresupuesto} from "../validators/PresupuestoValidators";
-import {validacionExistenciaPresupuesto} from "../middlewares/Presupuesto";
 const router = express.Router();
 
 router.get("/", findAll);

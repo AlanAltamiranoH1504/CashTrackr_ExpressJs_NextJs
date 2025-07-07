@@ -1,6 +1,7 @@
 import {Sequelize} from "sequelize-typescript"
 import dotenv from "dotenv";
 import Presupuesto from "../models/Presupuesto";
+import Gasto from "../models/Gasto";
 dotenv.config();
 
 const conexion = new Sequelize({
@@ -10,7 +11,7 @@ const conexion = new Sequelize({
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    models: [Presupuesto],
+    models: [Presupuesto, Gasto],
     define: {
         timestamps: true
     },
