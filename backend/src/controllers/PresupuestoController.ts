@@ -9,7 +9,11 @@ const prueba = (req, res) => {
 
 const findAll = async (req, res) => {
     try {
-        const presupuestos = await Presupuesto.findAll();
+        const presupuestos = await Presupuesto.findAll({
+            order: [
+                ["createdAt", "DESC"]
+            ]
+        });
         if (presupuestos.length <= 0) {
             return res.status(404).json({
                 error: "No hay presupuestos disponibles"
@@ -45,12 +49,6 @@ const findById = async (req, res) => {
 }
 
 const save = async (req, res) => {
-    const errores = validationResult(req);
-    if (!errores.isEmpty()) {
-        return res.status(409).json({
-            errores: errores.array()
-        });
-    }
     try {
         const {nombre, monto} = req.body;
         const presupuestoToSave = await Presupuesto.create({
@@ -69,13 +67,6 @@ const save = async (req, res) => {
 }
 
 const update = async (req, res) => {
-    const errores = validationResult(req);
-    if (!errores.isEmpty()) {
-        return res.status(409).json({
-            errores: errores.array()
-        });
-    }
-
     try {
         const {id} = req.params;
         const {nombre, monto} = req.body;

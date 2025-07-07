@@ -8,10 +8,10 @@ import {Model} from "sequelize-typescript";
 //Definicion de atributos del modelo
 class Presupuesto extends Model {
     @Column({type: DataType.STRING(100)})
-    nombre: string;
+    declare nombre: string;
 
     @Column({type: DataType.DECIMAL})
-    monto: number;
+    declare monto: number;
 }
 
 export default Presupuesto;
