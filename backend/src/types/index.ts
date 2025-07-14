@@ -11,3 +11,4 @@ export type Usuario = {
 }
 
 export type ConfirmacionCuentaUsuario = Pick<Usuario, "nombre" | "email" | "token">
+export type LoginUsuario = Pick<Usuario, "email" | "password">
