@@ -25,6 +25,26 @@ const saveUsuarioRequest = [
     }
 ];
 
+const resetPasswordRequest = [
+    body("passwordOld")
+        .notEmpty().withMessage("El password actual es obligatoria"),
+    body("newPassword")
+        .notEmpty().withMessage("El nuevo password es obligatorio")
+        .isLength({min: 5}).withMessage("El password nuevo debe tener al menos 5 caracteres"),
+
+
+    (req, res, next) => {
+        const errores = validationResult(req);
+        if (!errores.isEmpty()) {
+            return res.status(409).json({
+                errores: errores.array()
+            });
+        }
+        next();
+    }
+];
+
 export {
-    saveUsuarioRequest
+    saveUsuarioRequest,
+    resetPasswordRequest
 }

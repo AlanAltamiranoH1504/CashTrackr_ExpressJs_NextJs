@@ -10,6 +10,7 @@ export type Usuario = {
     updatedAt: Date,
 }
 
+export type UsuarioEnSesion = Pick<Usuario, "id" | "nombre" | "apellidos" | "email">
 export type ConfirmacionCuentaUsuario = Pick<Usuario, "nombre" | "email" | "token">
 export type OlvidePassword = Pick<Usuario, "nombre" | "email" | "token">
 export type LoginUsuario = Pick<Usuario, "email" | "password">

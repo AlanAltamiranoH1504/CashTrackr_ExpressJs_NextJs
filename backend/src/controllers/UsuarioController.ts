@@ -2,7 +2,7 @@ import Usuario from "../models/Usuario";
 import bcrypt = require("bcrypt");
 import {v4 as uuidv4} from "uuid";
 import {emailConfirmacionCuenta} from "../helpers/Emails";
-import {ConfirmacionCuentaUsuario} from "../types";
+import {ConfirmacionCuentaUsuario, UsuarioEnSesion} from "../types";
 
 const prueba = (req, res) => {
     return res.status(200).json({
@@ -38,7 +38,40 @@ const save = async (req, res) => {
     }
 }
 
+const reestablecerPassword = async (req, res) => {
+    const usuario: UsuarioEnSesion = req.usuario;
+    try {
+        const {passwordOld, newPassword} = req.body;
+        const userTpUpdate = await Usuario.findOne({
+            where: {email: usuario.email}
+        });
+
+        //Comparacion de password vieja
+        const correctOldPassword = await bcrypt.compare(passwordOld, userTpUpdate.password);
+        if (!correctOldPassword) {
+            return res.status(401).json({
+                errror: "Password antigua no correcta"
+            });
+        }
+
+        //Seteo de nueva password
+        const newPasswordHash = await bcrypt.hash(newPassword, 10);
+        userTpUpdate.password = newPasswordHash;
+        await userTpUpdate.save();
+
+        return res.status(200).json({
+            success: "Password actualizada correctamente"
+        });
+    }catch (e) {
+        return res.status(500).json({
+            error: "Error en actualizacion de password",
+            message: e.message
+        })
+    }
+}
+
 export {
     prueba,
-    save
+    save,
+    reestablecerPassword
 }
