@@ -44,7 +44,23 @@ const resetPasswordRequest = [
     }
 ];
 
+const checkPasswordRequest = [
+    body("password")
+        .notEmpty().withMessage("El password es obligatorio"),
+
+    (req, res, next) => {
+        const errores = validationResult(req);
+        if (!errores.isEmpty()) {
+            return res.status(409).json({
+                errores: errores.array()
+            });
+        }
+        next();
+    }
+]
+
 export {
     saveUsuarioRequest,
-    resetPasswordRequest
+    resetPasswordRequest,
+    checkPasswordRequest
 }

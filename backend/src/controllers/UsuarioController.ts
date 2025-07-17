@@ -70,8 +70,31 @@ const reestablecerPassword = async (req, res) => {
     }
 }
 
+const checkPassword = async (req, res) => {
+    try {
+        const usuarioInSesion: UsuarioEnSesion = req.usuario;
+        const {password} = req.body;
+        const userToCheck = await Usuario.findOne({where: {email: usuarioInSesion.email}});
+        const checkPasswords = await bcrypt.compare(password, userToCheck.password);
+        if (!checkPasswords) {
+            return res.status(401).json({
+                error: "La password no es correcta"
+            });
+        }
+        return res.status(200).json({
+            success: "Password correcta"
+        });
+    }catch (e) {
+        return res.status(500).json({
+            error: "Error en check de password",
+            message: e.message
+        })
+    }
+}
+
 export {
     prueba,
     save,
-    reestablecerPassword
+    reestablecerPassword,
+    checkPassword
 }
