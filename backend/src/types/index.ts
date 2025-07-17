@@ -9,6 +9,12 @@ export type Usuario = {
     createdAt: Date,
     updatedAt: Date,
 }
+export type Presupuesto = {
+    id: number,
+    nombre: string,
+    monto: number,
+    usuarioId: number
+}
 
 export type UsuarioEnSesion = Pick<Usuario, "id" | "nombre" | "apellidos" | "email">
 export type ConfirmacionCuentaUsuario = Pick<Usuario, "nombre" | "email" | "token">

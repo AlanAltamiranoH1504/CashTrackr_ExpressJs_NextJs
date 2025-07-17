@@ -1,5 +1,6 @@
 import Presupuesto from "../models/Presupuesto";
 import Gasto from "../models/Gasto";
+import {UsuarioEnSesion} from "../types";
 
 const prueba = (req, res) => {
     return res.status(200).json({
@@ -9,10 +10,14 @@ const prueba = (req, res) => {
 
 const findAll = async (req, res) => {
     try {
+        const usuarioInSesion: UsuarioEnSesion = req.usuario;
         const presupuestos = await Presupuesto.findAll({
             order: [
                 ["createdAt", "DESC"]
-            ]
+            ],
+            where: {
+                usuarioId: usuarioInSesion.id
+            }
         });
         if (presupuestos.length <= 0) {
             return res.status(404).json({
@@ -31,8 +36,12 @@ const findAll = async (req, res) => {
 const findById = async (req, res) => {
     try {
         const {id} = req.params;
-        const presupuestoToFound = await Presupuesto.findByPk(id, {
-            include: [{model: Gasto, attributes: ["id", "nombre", "monto", "updatedAt"]}]
+        const presupuestoToFound = await Presupuesto.findOne({
+            where: {
+                id: id
+            },
+            include: [
+                {model: Gasto, attributes: ["id", "nombre", "monto", "updatedAt"]}],
         });
         if (!presupuestoToFound) {
             return res.status(404).json({
@@ -53,9 +62,11 @@ const findById = async (req, res) => {
 const save = async (req, res) => {
     try {
         const {nombre, monto} = req.body;
-        const presupuestoToSave = await Presupuesto.create({
+        const usuarioInSesion: UsuarioEnSesion = req.usuario;
+        const presupuestoToSave: Presupuesto = await Presupuesto.create({
             nombre: nombre,
             monto: monto,
+            usuarioId: usuarioInSesion.id
         });
         return res.status(201).json({
             msg: "Presupuesto guardado correctamente.",
