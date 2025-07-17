@@ -144,10 +144,18 @@ const confirmarNuevaPassword = async (req, res) => {
     }
 }
 
+const usuarioEnSesion = async (req, res) => {
+    const usuarioEnSesion = req.usuario;
+    return res.status(200).json({
+        usuario: usuarioEnSesion
+    });
+}
+
 export {
     prueba,
     confirmacionCuenta,
     loginUsuario,
     olvidePassword,
-    confirmarNuevaPassword
+    confirmarNuevaPassword,
+    usuarioEnSesion
 }
