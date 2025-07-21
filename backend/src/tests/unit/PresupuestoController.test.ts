@@ -1,14 +1,22 @@
 import {createRequest, createResponse} from "node-mocks-http";
 import {Presupuestos} from "../mocks/Presupuestos";
-import {findAll, save} from "../../controllers/PresupuestoController";
+import {findAll, findById, save} from "../../controllers/PresupuestoController";
 import Presupuesto from "../../models/Presupuesto";
+// import {findById} from "../../controllers/GastoController";
 
 jest.mock("../../models/Presupuesto", () => ({
     __esModule: true,
     default: {
         findAll: jest.fn(),
-        create: jest.fn()
+        create: jest.fn(),
+        findById: jest.fn(),
+        findByPk: jest.fn(),
+        findOne: jest.fn(),
     }
+}));
+jest.mock("../../models/Gasto", () => ({
+    __esModule: true,
+    default: {} // 👈 no necesitas funciones si no las vas a llamar directamente
 }));
 
 describe("PresupuestoController.findAll", () => {
@@ -117,4 +125,41 @@ describe("PresupuestoController.save", () => {
         expect(res.statusCode).toBe(500);
         expect(data.error).toBe("Error en creación de presupuesto.");
     });
+});
+
+describe("PresupuestoController.findById", () => {
+    beforeEach(() => {
+        (Presupuesto.findOne as jest.Mock).mockImplementation(({ where }) => {
+            const presupuesto = Presupuestos.find(p => p.id === Number(where.id));
+            return Promise.resolve({
+                ...presupuesto,
+                Gasto: []
+            });
+        });
+    });
+
+    test("Prueba para busqueda de presupuesto por id", async () => {
+        const req = createRequest({
+            method: "GET",
+            url: "/presupuestos/1",
+            params: { id: "1" }
+        });
+        const res = createResponse();
+        await findById(req, res);
+        const data = res._getJSONData();
+        expect(data.presupuesto).not.toBeNull();
+        expect(res.statusCode).toBe(200);
+    });
+
+    test("Prueba para error en busqueda de presupuesto por id", async () => {
+        const req = createRequest({
+            method: "GET",
+            url: "/presupuestos/1",
+            params: { id: "9" }
+        });
+        const res = createResponse();
+        await findById(req, res);
+        const data = res._getJSONData();
+        console.log(data)
+    })
 });
