@@ -2,6 +2,7 @@ import {createRequest, createResponse} from "node-mocks-http";
 import {Presupuestos} from "../mocks/Presupuestos";
 import {findAll, findById, save} from "../../controllers/PresupuestoController";
 import Presupuesto from "../../models/Presupuesto";
+import {update} from "../../controllers/GastoController";
 // import {findById} from "../../controllers/GastoController";
 
 jest.mock("../../models/Presupuesto", () => ({
@@ -163,3 +164,39 @@ describe("PresupuestoController.findById", () => {
         console.log(data)
     })
 });
+
+describe("PresupuestoController.update", () => {
+    test("Prueba para actualización de presupuesto por id", async () => {
+        const saveMock = jest.fn().mockResolvedValue(true);
+
+        // Simula que se encontró el presupuesto y se puede modificar
+        (Presupuesto.findByPk as jest.Mock).mockResolvedValue({
+            id: 1,
+            nombre: "Presupuesto Original",
+            monto: 1000,
+            save: saveMock
+        });
+
+        const req = createRequest({
+            method: "PUT",
+            url: "/presupuestos/1",
+            params: { id: "1" },
+            body: {
+                nombre: "Presupuesto Actualizado",
+                monto: 2000
+            }
+        });
+
+        const res = createResponse();
+
+        await update(req, res);
+
+        const data = res._getJSONData();
+
+        // expect(Presupuesto.findByPk).toHaveBeenCalledWith("1");
+        expect(saveMock).toHaveBeenCalled();
+        expect(res.statusCode).toBe(200);
+        expect(data.msg).toBe("Presupuesto actualizado correctamente.");
+    });
+});
+
