@@ -1,23 +1,35 @@
 "use client"
+import createCuentaAction from "../../../actions/createCuentaAction";
+
 const FormularioRegistro = () => {
     return (
         <>
-            <form className="my-14 space-y-5" noValidate>
+            <form
+                action={createCuentaAction}
+                className="my-14 space-y-5"
+                noValidate>
                 <div className="flex flex-col gap-2">
                     <label htmlFor="email" className="font-bold text-2xl">Email:</label>
-                    <input type="email" id="email" className="w-full border border-gray-300 p-3 rounded-lg"
+                    <input type="email" id="email" name="email" className="w-full border border-gray-300 p-3 rounded-lg"
                            placeholder="Email de registro"/>
                 </div>
 
                 <div className="flex flex-col gap-2">
                     <label htmlFor="nombre" className="font-bold text-2xl">Nombre:</label>
-                    <input type="text" id="nombre" className="w-full border border-gray-300 p-3 rounded-lg"
+                    <input type="text" id="nombre" name="nombre" className="w-full border border-gray-300 p-3 rounded-lg"
                            placeholder="Nombre de registro"/>
                 </div>
 
                 <div className="flex flex-col gap-2">
+                    <label htmlFor={"apellidos"} className="font-bold text-2xl">Apellidos:</label>
+                    <input type="text" id="apellidos" name="apellidos" className="w-full border border-gray-300 p-3 rounded-lg"
+                        placeholder="Apellidos de registro"
+                    />
+                </div>
+
+                <div className="flex flex-col gap-2">
                     <label htmlFor="password" className="font-bold text-2xl">Passsword:</label>
-                    <input type="password" id="password" className="w-full border border-gray-300 p-3 rounded-lg"
+                    <input type="password" id="password" name="password" className="w-full border border-gray-300 p-3 rounded-lg"
                            placeholder="Password de registro"/>
                 </div>
 

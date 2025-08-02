@@ -1,0 +1,14 @@
+import {z} from "zod";
+
+export const registerAccountSchema = z.object({
+    email: z.string().email("El email no tiene un formato valido"),
+    password: z.string()
+        .min(3, "La contraseña debe tener al menos 3 caracteres")
+        .max(50, "La contraseña debe ser maximo de 50 caracteres"),
+    nombre: z.string()
+        .min(1, "El nombre es obligatorio")
+        .max(50, "El nombre debe ser maximo de 50 caracteres"),
+    apellidos: z.string()
+        .min(1, "Los apellidos son obligatorios")
+        .max(100, "Los apellidos deben ser maximo 100 caracteres")
+});
