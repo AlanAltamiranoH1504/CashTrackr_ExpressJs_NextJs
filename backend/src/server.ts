@@ -5,6 +5,8 @@ import GastoRouter from "./routes/GastoRouter";
 import UsuarioRouter from "./routes/UsuarioRouter";
 import AuthRouter from "./routes/AuthRouter";
 import {limiter} from "./config/limiter";
+import {corsConfig} from "./config/cors";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
@@ -13,6 +15,9 @@ conexion.authenticate().then(() => {
 });
 //Limite de peticiones global
 // app.use(limiter);
+
+//Habilitacion de CORS
+app.use(cors(corsConfig));
 
 app.use("/presupuestos", PresupuestoRouter);
 app.use("/gastos", GastoRouter);
