@@ -12,3 +12,11 @@ export const registerAccountSchema = z.object({
         .min(1, "Los apellidos son obligatorios")
         .max(100, "Los apellidos deben ser maximo 100 caracteres")
 });
+
+export const loginSuccessSchema = z.object({
+    token: z.string(),
+    success: z.string()
+});
+export const loginErrorSchema = z.object({
+    error: z.string()
+});
