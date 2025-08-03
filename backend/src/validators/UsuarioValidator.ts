@@ -6,7 +6,7 @@ const saveUsuarioRequest = [
         .isLength({min: 3, max: 50}).withMessage("La longitud del nombre es entre 3 y 50 caracteres"),
     body("apellidos")
         .notEmpty().withMessage("Los apellidos son obligatorios")
-        .isLength({min: 3, max: 100}).withMessage("La longitud del nombre es entre 3 y 100 caracteres"),
+        .isLength({min: 3, max: 100}).withMessage("La longitud de los apellidos es entre 3 y 100 caracteres"),
     body("email")
         .notEmpty().withMessage("El email de es obligatorio")
         .isEmail().withMessage("El email debe tener el formato correcto"),

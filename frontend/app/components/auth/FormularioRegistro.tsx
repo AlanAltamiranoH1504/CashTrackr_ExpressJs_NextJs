@@ -4,13 +4,13 @@ import {useForm} from "react-hook-form";
 import {UsuarioDB, UsuarioToSave} from "../../../types";
 import {useMutation} from "@tanstack/react-query";
 import {registroUsuariosPeticionPOST} from "../../../api";
-import {toast} from "react-toastify";
+import {toast, ToastContentProps} from "react-toastify";
+import {ReactElement, JSXElementConstructor, ReactNode, ReactPortal, AwaitedReactNode} from "react";
 
 const FormularioRegistro = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<UsuarioToSave>();
 
     function registroUsuario(data: UsuarioToSave) {
-        console.log("Registrando usuario");
         registroUsuarioMutation.mutate(data);
     }
 
@@ -20,8 +20,16 @@ const FormularioRegistro = () => {
         onSuccess: () => {
             toast.success("Usuario registrado.Verifica tu e-mail.")
         },
-        onError: () => {
-            toast.error("Error en el registro de usuario.");
+        onError: (error) => {
+            // @ts-ignore
+            const erroresArray = error.response.data.errores;
+            if(erroresArray) {
+                erroresArray.forEach((error: { msg: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | ((props: ToastContentProps<unknown>) => ReactNode) | null | undefined; }) => {
+                    toast.error(error.msg)
+                });
+            } else {
+                toast.error("E-mail ya registrado y en uso.");
+            }
         }
     })
 
@@ -37,6 +45,10 @@ const FormularioRegistro = () => {
                            placeholder="Email de registro"
                            {...register("email", {
                                required: "El email es obligatorio",
+                               pattern: {
+                                   value: /\S+@\S+\.\S+/,
+                                   message: "El formato de email es incorrecto"
+                               }
                            })}
                     />
                     <div className=" bg-red-100 text-red-600 text-center font-bold rounded-md">
@@ -49,7 +61,11 @@ const FormularioRegistro = () => {
                     <input type="text" id="nombre" className="w-full border border-gray-300 p-3 rounded-lg"
                            placeholder="Nombre de registro"
                            {...register("nombre", {
-                               required: "El nombre es obligatorio"
+                               required: "El nombre es obligatorio",
+                               minLength: {
+                                   value: 3,
+                                   message: "El nombre ser de al menos 3 caracteres"
+                               }
                            })}
                     />
                     <div className="bg-red-100 text-red-600 text-center font-bold rounded-md">
@@ -62,7 +78,11 @@ const FormularioRegistro = () => {
                     <input type="text" id="apellidos" className="w-full border border-gray-300 p-3 rounded-lg"
                            placeholder="Apellidos de registro"
                            {...register("apellidos", {
-                               required: "Los apellidos son obligatorios"
+                               required: "Los apellidos son obligatorios",
+                               minLength: {
+                                   value: 3,
+                                   message: "Los apellidos deben ser de al menos 3 caracteres"
+                               }
                            })}
                     />
                     <div className="bg-red-100 text-red-600 text-center font-bold rounded-md">
@@ -78,8 +98,8 @@ const FormularioRegistro = () => {
                            {...register("password", {
                                required: "El password es obligatorio",
                                minLength: {
-                                   value: 3,
-                                   message: "El password debe tener al menos 3 caracteres"
+                                   value: 5,
+                                   message: "El password debe tener al menos 5 caracteres"
                                }
                            })}
                     />

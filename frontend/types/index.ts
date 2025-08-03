@@ -9,3 +9,6 @@ export type UsuarioDB = {
 }
 
 export type UsuarioToSave = Pick<UsuarioDB, "nombre" | "apellidos" | "password" | "email">
+export type FormTokenConfirmacionCuenta = {
+    tokenRequest: string
+}

@@ -24,7 +24,7 @@ const emailConfirmacionCuenta = async (datos: ConfirmacionCuentaUsuario) => {
                     Gracias por registrarte en <strong>CashTrackr</strong>. Para activar tu cuenta, por favor confirma tu dirección de correo electrónico haciendo clic en el siguiente enlace:
                 </p>
                 <p style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.BACKEND_URL}/auth/confirmar/${datos.token}" 
+                    <a href="${process.env.FRONTEND_URL}/auth/confirmar/${datos.token}" 
                        style="display: inline-block; padding: 12px 25px; background-color: #3498db; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold;">
                         Confirmar Cuenta
                     </a>
@@ -61,7 +61,7 @@ const emailOlvidePassword = async (datos: OlvidePassword) => {
                     Has solicitado restablecer tu password en <strong>CashTrackr</strong>. Para reestablecerla, por favor haz clic en el siguiente enlace:
                 </p>
                 <p style="text-align: center; margin: 30px 0;">
-                    <a href="${process.env.BACKEND_URL}/auth/olvide-password/${datos.token}" 
+                    <a href="${process.env.FRONTEND_URL}/auth/olvide-password/${datos.token}" 
                        style="display: inline-block; padding: 12px 25px; background-color: #3498db; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold;">
                         Recuperar Password
                     </a>
