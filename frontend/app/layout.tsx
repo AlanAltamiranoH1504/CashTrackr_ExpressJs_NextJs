@@ -1,6 +1,8 @@
 import type {Metadata} from "next";
 import "./globals.css";
 import {Fjalla_One, Orbitron, Inter} from "next/font/google"
+import Providers from "./providers";
+import ToastProvider from "./providers/ToastProvider";
 
 const fjallaOne = Fjalla_One({subsets: ["latin"], weight: "400"});
 const orbitron = Orbitron({subsets: ["latin"]});
@@ -13,7 +15,10 @@ export default function RootLayout({children,}: Readonly<{ children: React.React
     return (
         <html lang="en">
         <body className={fjallaOne.className}>
-            {children}
+            <Providers>
+                {children}
+                <ToastProvider/>
+            </Providers>
         </body>
         </html>
     );

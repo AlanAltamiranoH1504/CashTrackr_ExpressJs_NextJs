@@ -2,7 +2,7 @@
 import {registerAccountSchema} from "../schemas/registerAccountSchema";
 import {ZodError} from "zod";
 
-async function createCuentaAction(formData: FormData) {
+async function createCuentaAction(prevState: void,formData: FormData) {
     const registerFormData = {
         email: formData.get("email"),
         password: formData.get("password"),
@@ -36,6 +36,7 @@ async function createCuentaAction(formData: FormData) {
         error.map((e) => {
             erroresArray.push(e.message);
         });
+        console.log(erroresArray);
     }
 }
 
