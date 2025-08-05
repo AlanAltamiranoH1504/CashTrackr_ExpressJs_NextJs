@@ -1,6 +1,6 @@
 import {z} from "zod";
 
-export const registerAccountSchema = z.object({
+export const index = z.object({
     email: z.string().email("El email no tiene un formato valido"),
     password: z.string()
         .min(3, "La contraseña debe tener al menos 3 caracteres")
@@ -20,3 +20,11 @@ export const loginSuccessSchema = z.object({
 export const loginErrorSchema = z.object({
     error: z.string()
 });
+export const usuarioEnSesionSchema = z.object({
+    usuario: z.object({
+        id: z.number(),
+        nombre: z.string(),
+        apellidos: z.string(),
+        email: z.string()
+    })
+})

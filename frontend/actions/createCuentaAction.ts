@@ -1,5 +1,5 @@
 "use server"
-import {registerAccountSchema} from "../schemas/registerAccountSchema";
+import {index} from "../schemas";
 import {ZodError} from "zod";
 
 async function createCuentaAction(prevState: void,formData: FormData) {
@@ -9,7 +9,7 @@ async function createCuentaAction(prevState: void,formData: FormData) {
         nombre: formData.get("nombre"),
         apellidos: formData.get("apellidos")
     };
-    const resultComparacion = registerAccountSchema.safeParse(registerFormData);
+    const resultComparacion = index.safeParse(registerFormData);
     if (resultComparacion.success) {
         const url = `${process.env.API_URL_BACKEND}/usuarios`;
         try {

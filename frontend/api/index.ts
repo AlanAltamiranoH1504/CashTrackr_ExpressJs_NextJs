@@ -1,7 +1,6 @@
 import {FormLoginUser, FormTokenConfirmacionCuenta, UsuarioToSave} from "../types";
 import axios from "axios";
-import {loginSuccessSchema} from "../schemas/registerAccountSchema";
-import {locales} from "zod";
+import {loginSuccessSchema, usuarioEnSesionSchema} from "../schemas";
 
 export async function registroUsuariosPeticionPOST(data: UsuarioToSave) {
     try {
@@ -12,16 +11,17 @@ export async function registroUsuariosPeticionPOST(data: UsuarioToSave) {
             }
         });
         return responseAPI.data;
-    }catch (e) {
+    } catch (e) {
         throw e;
     }
 }
+
 export async function confirmacionCuentaPOST(data: FormTokenConfirmacionCuenta) {
     try {
         const url = `http://localhost:3000/auth/confirmar/${data.tokenRequest}`;
         const responseAPI = await axios.post(url, data);
         return responseAPI.data;
-    }catch (e) {
+    } catch (e) {
         throw e;
     }
 }
@@ -37,7 +37,26 @@ export async function loginUsuarioPOST(data: FormLoginUser) {
         } else {
             console.log("Respuesta de error");
         }
-    }catch (e) {
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function usuarioEnSesionGET(tokenJWT: string | null) {
+    try {
+        const url = `http://localhost:3000/auth/usuario`;
+        const responseAPI = await axios.get(url, {
+            headers: {
+                "Authorization": "Bearer " + tokenJWT
+            }
+        });
+        const resultadoAPI = usuarioEnSesionSchema.safeParse(responseAPI.data);
+        if (resultadoAPI.success) {
+            return resultadoAPI.data;
+        } else {
+            console.log("No hay usuario en esesion")
+        }
+    } catch (e) {
         throw e;
     }
 }

@@ -4,9 +4,11 @@ import {FormLoginUser} from "../../../types";
 import {useMutation} from "@tanstack/react-query";
 import {loginUsuarioPOST} from "../../../api";
 import {toast} from "react-toastify";
+import {useRouter} from "next/navigation";
 
 const FormularioLogin = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<FormLoginUser>();
+    const router = useRouter();
 
     function peticionLogin(data: FormLoginUser) {
         loginUsuarioMutation.mutate(data);
@@ -16,10 +18,11 @@ const FormularioLogin = () => {
         mutationKey: ["loginUsuario"],
         mutationFn: loginUsuarioPOST,
         onError: () => {
-            toast.error("Error en credenciales de usuario")
+            toast.error("Error en credenciales de usuario");
         },
         onSuccess: () => {
             toast.success("Login exitoso");
+            router.push("/administracion");
         }
     });
 
