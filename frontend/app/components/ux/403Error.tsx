@@ -5,7 +5,7 @@ const Error403 = () => {
     const router = useRouter();
     return (
         <>
-            <div className="flex justify-center align-middle items-center">
+            <div className="flex justify-center align-middle items-center my-52">
                 <div className="bg-white shadow-2xl rounded-3xl p-10 max-w-md text-center border border-gray-200">
                     <div className="text-red-500">
                         <svg className="mx-auto h-20 w-20" fill="none" stroke="currentColor" stroke-width="1.5"
