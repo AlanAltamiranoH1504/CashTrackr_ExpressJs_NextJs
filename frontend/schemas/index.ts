@@ -27,4 +27,7 @@ export const usuarioEnSesionSchema = z.object({
         apellidos: z.string(),
         email: z.string()
     })
-})
+});
+export const responseSavePresupuestoSchema = z.object({
+    msg: z.string()
+});

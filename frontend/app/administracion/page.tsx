@@ -1,5 +1,11 @@
-"use client"
+// "use client"
 import Link from "next/link";
+import {Metadata} from "next";
+
+export const metadata:Metadata = {
+    title: "CashTrackr - Administracion",
+    description: "CashTrackr - Administracion",
+}
 
 const AdministracionPage = () => {
     return (
@@ -13,7 +19,7 @@ const AdministracionPage = () => {
                     </p>
                 </div>
                 <Link
-                    href={'/admin/budget/new'}
+                    href={'/administracion/presupuestos/new'}
                     className='bg-amber-500 hover:bg-amber-600 transition-colors duration-500 p-2 rounded-lg text-white font-bold w-full md:w-auto text-center'
                 >
                     Crear Presupuesto

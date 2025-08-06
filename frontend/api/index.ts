@@ -2,11 +2,11 @@ import {
     FormLoginUser,
     FormOlvidePassword,
     FormResetPassword,
-    FormTokenConfirmacionCuenta,
+    FormTokenConfirmacionCuenta, PresupuestoToSave,
     UsuarioToSave
 } from "../types";
 import axios from "axios";
-import {loginSuccessSchema, usuarioEnSesionSchema} from "../schemas";
+import {loginSuccessSchema, responseSavePresupuestoSchema, usuarioEnSesionSchema} from "../schemas";
 
 export async function registroUsuariosPeticionPOST(data: UsuarioToSave) {
     try {
@@ -90,7 +90,27 @@ export async function resetPasswordPOST(data: FormResetPassword) {
             }
         });
         return responseAPI.data;
-    }catch (e) {
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function savePresupuestoPOST(data: PresupuestoToSave) {
+    try {
+        const url = `http://localhost:3000/presupuestos`;
+        const responseAPI = await axios.post(url, data, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            }
+        });
+        const resultadoAPI = responseSavePresupuestoSchema.safeParse(responseAPI.data);
+        if (resultadoAPI.success) {
+            return resultadoAPI.data
+        } else {
+            console.log("Error en guardado de presupuesto");
+        }
+
+    } catch (e) {
         throw e;
     }
 }

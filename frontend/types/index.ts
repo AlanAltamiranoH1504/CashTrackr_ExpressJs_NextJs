@@ -7,7 +7,15 @@ export type UsuarioDB = {
     token: string,
     confirmado: boolean
 }
+export type PresupuestoDB = {
+    id: number,
+    nombre: string,
+    monto: number
+}
+
 export type UsuarioToSave = Pick<UsuarioDB, "nombre" | "apellidos" | "password" | "email">
+export type PresupuestoToSave = Pick<PresupuestoDB, "nombre" | "monto">
+
 export type FormTokenConfirmacionCuenta = {
     tokenRequest: string
 }
