@@ -1,4 +1,10 @@
-import {FormLoginUser, FormTokenConfirmacionCuenta, UsuarioToSave} from "../types";
+import {
+    FormLoginUser,
+    FormOlvidePassword,
+    FormResetPassword,
+    FormTokenConfirmacionCuenta,
+    UsuarioToSave
+} from "../types";
 import axios from "axios";
 import {loginSuccessSchema, usuarioEnSesionSchema} from "../schemas";
 
@@ -57,6 +63,34 @@ export async function usuarioEnSesionGET(tokenJWT: string | null) {
             console.log("No hay usuario en esesion")
         }
     } catch (e) {
+        throw e;
+    }
+}
+
+export async function olvidePasswordPOST(data: FormOlvidePassword) {
+    try {
+        const url = `http://localhost:3000/auth/olvide-password`;
+        const responseAPI = await axios.post(url, data, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+        return responseAPI.data;
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function resetPasswordPOST(data: FormResetPassword) {
+    try {
+        const url = `http://localhost:3000/auth/validacion-nueva-password`;
+        const responseAPI = await axios.post(url, data, {
+            headers: {
+                "Content-Type": "application/json",
+            }
+        });
+        return responseAPI.data;
+    }catch (e) {
         throw e;
     }
 }

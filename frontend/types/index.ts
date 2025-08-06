@@ -15,3 +15,10 @@ export type FormLoginUser = {
     email: string,
     password: string
 }
+export type FormOlvidePassword = {
+    email: string
+}
+export type FormResetPassword = {
+    password: string,
+    token: string
+}
