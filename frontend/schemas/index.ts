@@ -31,3 +31,13 @@ export const usuarioEnSesionSchema = z.object({
 export const responseSavePresupuestoSchema = z.object({
     msg: z.string()
 });
+export const responseFindAllPresupuestosSchema = z.array(
+    z.object({
+        id: z.number(),
+        nombre: z.string(),
+        monto: z.number(),
+        usuarioId: z.number(),
+        createdAt: z.string(),
+        updatedAt: z.string(),
+    })
+);

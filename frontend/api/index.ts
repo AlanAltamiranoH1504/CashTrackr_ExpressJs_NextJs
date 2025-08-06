@@ -6,7 +6,14 @@ import {
     UsuarioToSave
 } from "../types";
 import axios from "axios";
-import {loginSuccessSchema, responseSavePresupuestoSchema, usuarioEnSesionSchema} from "../schemas";
+import {
+    loginSuccessSchema,
+    responseFindAllPresupuestosSchema,
+    responseSavePresupuestoSchema,
+    usuarioEnSesionSchema
+} from "../schemas";
+
+// const JWT_TOKEN: string = localStorage.getItem("toke_cashTrackr");
 
 export async function registroUsuariosPeticionPOST(data: UsuarioToSave) {
     try {
@@ -110,6 +117,25 @@ export async function savePresupuestoPOST(data: PresupuestoToSave) {
             console.log("Error en guardado de presupuesto");
         }
 
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function findAllPresupuestosGET() {
+    try {
+        const url = "http://localhost:3000/presupuestos";
+        const responseAPI = await axios.get(url, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            }
+        });
+        const resultadoAPI = responseFindAllPresupuestosSchema.safeParse(responseAPI.data);
+        if (resultadoAPI.success) {
+            return resultadoAPI.data;
+        } else {
+            console.log("Error cuerpo de response");
+        }
     } catch (e) {
         throw e;
     }
