@@ -177,3 +177,17 @@ export async function updatePresupuestoByIdPUT(data: PresupuestoToUpdate) {
         throw e;
     }
 }
+
+export async function deletePresupuestoByIdDELETE(id: number) {
+    try {
+        const url = `http://localhost:3000/presupuestos/${id}`;
+        const responseAPI = await axios.delete(url, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            }
+        });
+        console.log(responseAPI.data);
+    } catch (e) {
+        throw e;
+    }
+}

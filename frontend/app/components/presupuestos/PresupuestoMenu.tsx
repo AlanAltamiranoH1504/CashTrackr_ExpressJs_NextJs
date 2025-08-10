@@ -1,19 +1,43 @@
 "use client"
-import { Fragment } from "react"
+import {Fragment} from "react"
 import Link from "next/link"
-import { Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react"
-import { EllipsisVerticalIcon } from "@heroicons/react/20/solid"
+import {Menu, MenuButton, MenuItem, MenuItems, Transition} from "@headlessui/react"
+import {EllipsisVerticalIcon} from "@heroicons/react/20/solid"
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {deletePresupuestoByIdDELETE} from "../../../api";
+import {toast} from "react-toastify";
+import {useRouter} from "next/navigation";
 
 type PresupuestosMenuProps = {
     id: number
 }
 const PresupuestoMenu = ({id}: PresupuestosMenuProps) => {
+    const router = useRouter();
+    const queryClient = useQueryClient();
+    function eliminarPresupuesto() {
+        deletePresupuestoMutation.mutate(id);
+    }
+
+    const deletePresupuestoMutation = useMutation({
+        mutationKey: ["deletePresupuestoById"],
+        mutationFn: deletePresupuestoByIdDELETE,
+        onSuccess: () => {
+            toast.info("Presupuesto eliminado correctamente");
+            queryClient.invalidateQueries({
+                queryKey: ["findAllPresupuestos"]
+            });
+            router.push("/administracion");
+        },
+        onError: (error) => {
+            toast.error("Error en eliminación de presupuesto");
+        }
+    });
     return (
         <>
             <Menu as="div" className="relative flex-none">
                 <MenuButton className="-m-2.5 block p-2.5 text-gray-500 hover:text-gray-900">
                     <span className="sr-only">opciones</span>
-                    <EllipsisVerticalIcon className="h-9 w-9" aria-hidden="true" />
+                    <EllipsisVerticalIcon className="h-9 w-9" aria-hidden="true"/>
                 </MenuButton>
                 <Transition
                     as={Fragment}
@@ -24,7 +48,8 @@ const PresupuestoMenu = ({id}: PresupuestosMenuProps) => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                 >
-                    <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                    <MenuItems
+                        className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                         <MenuItem>
                             <Link
                                 href={`/administracion/presupuestos/${id}`}
@@ -46,7 +71,9 @@ const PresupuestoMenu = ({id}: PresupuestosMenuProps) => {
                             <button
                                 type='button'
                                 className='block px-3 py-1 text-sm leading-6 text-red-500'
-                                onClick={ () => {} }
+                                onClick={() => {
+                                    eliminarPresupuesto();
+                                }}
                             >
                                 Eliminar Presupuesto
                             </button>

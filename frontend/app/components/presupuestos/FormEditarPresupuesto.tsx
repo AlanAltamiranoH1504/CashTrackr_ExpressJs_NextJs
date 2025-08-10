@@ -6,6 +6,7 @@ import {PresupuestoToSave, PresupuestoToUpdate} from "../../../types";
 import {useEffect} from "react";
 import {toast} from "react-toastify";
 import {useRouter} from "next/navigation";
+import Error403 from "../ux/403Error";
 
 type FormEditarPresupuestoProps = {
     params: { id: number }
@@ -47,7 +48,12 @@ const FormEditarPresupuesto = ({params}: FormEditarPresupuestoProps) => {
             monto: data?.presupuesto.monto,
             nombre: data?.presupuesto.nombre
         })
-    }, [data])
+    }, [data]);
+
+
+    if (isError) {
+        return <div><Error403/></div>
+    }
 
     return (
         <>
