@@ -41,3 +41,12 @@ export const responseFindAllPresupuestosSchema = z.array(
         updatedAt: z.string(),
     })
 );
+export const responseFindByIdPresupuestoSchema = z.object({
+    presupuesto: z.object({
+        id: z.number(),
+        nombre: z.string(),
+        monto: z.number(),
+        updatedAt: z.string(),
+        usuarioId: z.number()
+    })
+})

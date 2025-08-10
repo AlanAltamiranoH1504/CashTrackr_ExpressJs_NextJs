@@ -15,6 +15,7 @@ export type PresupuestoDB = {
 
 export type UsuarioToSave = Pick<UsuarioDB, "nombre" | "apellidos" | "password" | "email">
 export type PresupuestoToSave = Pick<PresupuestoDB, "nombre" | "monto">
+export type PresupuestoToUpdate = Pick<PresupuestoDB, "id" | "nombre" | "monto">
 
 export type FormTokenConfirmacionCuenta = {
     tokenRequest: string

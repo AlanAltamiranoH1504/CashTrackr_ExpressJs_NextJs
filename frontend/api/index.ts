@@ -2,13 +2,13 @@ import {
     FormLoginUser,
     FormOlvidePassword,
     FormResetPassword,
-    FormTokenConfirmacionCuenta, PresupuestoToSave,
+    FormTokenConfirmacionCuenta, PresupuestoToSave, PresupuestoToUpdate,
     UsuarioToSave
 } from "../types";
 import axios from "axios";
 import {
     loginSuccessSchema,
-    responseFindAllPresupuestosSchema,
+    responseFindAllPresupuestosSchema, responseFindByIdPresupuestoSchema,
     responseSavePresupuestoSchema,
     usuarioEnSesionSchema
 } from "../schemas";
@@ -136,6 +136,43 @@ export async function findAllPresupuestosGET() {
         } else {
             console.log("Error cuerpo de response");
         }
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function findPresupuestoByIdGET(id: number) {
+    try {
+        const url = `http://localhost:3000/presupuestos/${id}`;
+        const responseAPI = await axios.get(url, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            }
+        });
+        const resultadoAPI = responseFindByIdPresupuestoSchema.safeParse(responseAPI.data);
+        if (resultadoAPI.success) {
+            return resultadoAPI.data;
+        } else {
+            console.log("Error en cuerpo de respuesta de API");
+        }
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function updatePresupuestoByIdPUT(data: PresupuestoToUpdate) {
+    try {
+        const requestBody = {
+            nombre: data.nombre,
+            monto: data.monto
+        };
+        const url = `http://localhost:3000/presupuestos/${data.id}`;
+        const responseAPI = await axios.put(url, requestBody, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            }
+        });
+        console.log(responseAPI.data);
     } catch (e) {
         throw e;
     }
