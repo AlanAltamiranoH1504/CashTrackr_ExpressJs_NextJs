@@ -1,7 +1,7 @@
 import {
     FormLoginUser,
     FormOlvidePassword,
-    FormResetPassword,
+    FormResetPassword, FormSaveGastoWithPresupuestoId,
     FormTokenConfirmacionCuenta, PresupuestoToSave, PresupuestoToUpdate,
     UsuarioToSave
 } from "../types";
@@ -188,6 +188,19 @@ export async function deletePresupuestoByIdDELETE(id: number) {
         });
         console.log(responseAPI.data);
     } catch (e) {
+        throw e;
+    }
+}
+
+export async function saveGastoPOST(data: FormSaveGastoWithPresupuestoId) {
+    try {
+        const url = "http://localhost:3000/gastos";
+        const responseAPI = await axios.post(url, data, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            }
+        });
+    }catch (e) {
         throw e;
     }
 }
