@@ -226,3 +226,16 @@ export async function saveGastoPOST(data: FormSaveGastoWithPresupuestoId) {
         throw e;
     }
 }
+
+export async function deleteGastoByIdDelete(id: number) {
+    try {
+        const url = `http://localhost:3000/gastos/${id}`;
+        const responseAPI = await axios.delete(url, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            }
+        });
+    } catch (e) {
+        throw e;
+    }
+}

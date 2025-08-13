@@ -3,11 +3,33 @@ import {Fragment} from 'react'
 import {EllipsisVerticalIcon} from '@heroicons/react/20/solid'
 import {Menu, MenuButton, MenuItem, MenuItems, Transition} from '@headlessui/react'
 import {useRouter} from "next/navigation";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {deleteGastoByIdDelete} from "../../../api";
+import {toast} from "react-toastify";
 type ExpenseMenuProps = {
     id: number
 }
 export default function ExpenseMenu({id}: ExpenseMenuProps) {
-    const router = useRouter()
+    const router = useRouter();
+    const queryCliente = useQueryClient();
+    function eliminarGasto() {
+        deleteGastoByIdMutation.mutate(id);
+    }
+
+    const deleteGastoByIdMutation = useMutation({
+        mutationKey: ["deleteGastoById"],
+        mutationFn: deleteGastoByIdDelete,
+        onSuccess: () => {
+            toast.success("Gasto eliminado correctamente!");
+            queryCliente.invalidateQueries({
+                queryKey: ["findPresupuestoById"]
+            });
+        },
+        onError: () => {
+            toast.error("Ocurrio un error en la eliminación del gasto");
+        }
+    });
+
     return (
         <div className="flex shrink-0 items-center gap-x-6">
             <Menu as="div" className="relative flex-none">
@@ -41,6 +63,7 @@ export default function ExpenseMenu({id}: ExpenseMenuProps) {
                                 type='button'
                                 className='block px-3 py-1 text-sm leading-6 text-red-500'
                                 onClick={() => {
+                                    eliminarGasto();
                                 }}
                             >
                                 Eliminar Gasto

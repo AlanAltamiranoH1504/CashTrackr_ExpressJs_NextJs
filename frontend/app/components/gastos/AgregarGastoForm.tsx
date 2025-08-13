@@ -1,6 +1,6 @@
 import {useForm} from "react-hook-form";
 import {FormSaveGastoWithPresupuestoId, GastoToSave} from "../../../types";
-import {useMutation} from "@tanstack/react-query";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 import {saveGastoPOST} from "../../../api";
 import {toast} from "react-toastify";
 import {useParams, useRouter} from "next/navigation";
@@ -9,6 +9,7 @@ const AgregarGastoForm = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<GastoToSave>();
     const router = useRouter();
     const params = useParams();
+    const queryClient = useQueryClient();
 
     function agregarGastoForm(data: GastoToSave) {
         const dataWithIdPresupuesto: FormSaveGastoWithPresupuestoId = {
@@ -22,7 +23,9 @@ const AgregarGastoForm = () => {
         mutationFn: saveGastoPOST,
         onSuccess: () => {
             toast.success("Gasto agregado correctamente");
-            router.push("/administracion");
+            queryClient.invalidateQueries({
+                queryKey: ["findPresupuestoById"]
+            });
         },
         onError: () => {
             toast.error("Error en creacion de gastto");
