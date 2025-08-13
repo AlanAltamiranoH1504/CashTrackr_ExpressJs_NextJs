@@ -18,9 +18,13 @@ export default function ModalContainer() {
 
     const show = showModal ? true : false;
     const agregarGasto = searchParams.get("agregarGasto");
+    const editGastoId = searchParams.get("editGastoId");
     const getComponentName = () => {
         if (agregarGasto) {
             return "AgregarGasto";
+        }
+        if (editGastoId) {
+            return "EditarGasto"
         }
     }
     const componenteName = getComponentName();

@@ -24,6 +24,13 @@ export type PresupuestoToSave = Pick<PresupuestoDB, "nombre" | "monto">
 export type PresupuestoToUpdate = Pick<PresupuestoDB, "id" | "nombre" | "monto">
 export type GastoToSave = Pick<GastoDB, "nombre" | "monto">
 
+export type GastoToUpdate = {
+    id: number,
+    nombre: string,
+    monto: number,
+    presupuestoId: number
+}
+
 export type FormTokenConfirmacionCuenta = {
     tokenRequest: string
 }

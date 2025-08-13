@@ -57,4 +57,17 @@ export const responseFindByIdPresupuestoSchema = z.object({
             })
         )
     })
-})
+});
+
+export const responseFindGastoByIdSchema = z.object({
+    id: z.number(),
+    nombre: z.string(),
+    monto: z.number(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    presupuestoId: z.number()
+});
+
+export const responseUpdateGastoByIdSchema = z.object({
+    success: z.string()
+});

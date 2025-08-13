@@ -2,14 +2,14 @@ import {
     FormLoginUser,
     FormOlvidePassword,
     FormResetPassword, FormSaveGastoWithPresupuestoId,
-    FormTokenConfirmacionCuenta, PresupuestoToSave, PresupuestoToUpdate,
+    FormTokenConfirmacionCuenta, GastoDB, GastoToUpdate, PresupuestoToSave, PresupuestoToUpdate,
     UsuarioToSave
 } from "../types";
 import axios from "axios";
 import {
     loginSuccessSchema,
-    responseFindAllPresupuestosSchema, responseFindByIdPresupuestoSchema,
-    responseSavePresupuestoSchema,
+    responseFindAllPresupuestosSchema, responseFindByIdPresupuestoSchema, responseFindGastoByIdSchema,
+    responseSavePresupuestoSchema, responseUpdateGastoByIdSchema,
     usuarioEnSesionSchema
 } from "../schemas";
 
@@ -214,6 +214,25 @@ export async function findGastosByPresupuestoId(id: number) {
     }
 }
 
+export async function findGastoByIdGET(id: number) {
+    try {
+        const url = `http://localhost:3000/gastos/${id}`;
+        const responseAPI = await axios.get(url, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            }
+        });
+        const resultAPI = responseFindGastoByIdSchema.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data
+        } else {
+            console.log("Error en cuerpo de response de API");
+        }
+    } catch (e) {
+        throw e;
+    }
+}
+
 export async function saveGastoPOST(data: FormSaveGastoWithPresupuestoId) {
     try {
         const url = "http://localhost:3000/gastos";
@@ -222,6 +241,25 @@ export async function saveGastoPOST(data: FormSaveGastoWithPresupuestoId) {
                 "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
             }
         });
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function updateGastoByIdPUT(data: GastoToUpdate) {
+    try {
+        const url = `http://localhost:3000/gastos/${data.id}`;
+        const responseAPI = await axios.put(url, data, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            }
+        });
+        const resultAPI = responseUpdateGastoByIdSchema.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data
+        } else {
+            resultAPI.error;
+        }
     } catch (e) {
         throw e;
     }
