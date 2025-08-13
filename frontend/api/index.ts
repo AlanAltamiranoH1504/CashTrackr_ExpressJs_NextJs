@@ -192,6 +192,28 @@ export async function deletePresupuestoByIdDELETE(id: number) {
     }
 }
 
+export async function findGastosByPresupuestoId(id: number) {
+    try {
+        const url = `http://localhost:3000/gastos/presupuesto/${id}`;
+        const requestBody = {
+            presupuestoId: id
+        };
+        const responseAPI = await fetch(url, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            },
+            // body: JSON.stringify(requestBody),
+            method: "GET"
+        }).then((response) => response.json())
+            .then((data) => data)
+            .catch((error) => error);
+
+        return responseAPI;
+    } catch (e) {
+        return e;
+    }
+}
+
 export async function saveGastoPOST(data: FormSaveGastoWithPresupuestoId) {
     try {
         const url = "http://localhost:3000/gastos";
@@ -200,7 +222,7 @@ export async function saveGastoPOST(data: FormSaveGastoWithPresupuestoId) {
                 "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
             }
         });
-    }catch (e) {
+    } catch (e) {
         throw e;
     }
 }

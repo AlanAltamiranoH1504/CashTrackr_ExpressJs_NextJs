@@ -47,6 +47,14 @@ export const responseFindByIdPresupuestoSchema = z.object({
         nombre: z.string(),
         monto: z.number(),
         updatedAt: z.string(),
-        usuarioId: z.number()
+        usuarioId: z.number(),
+        gastos: z.array(
+            z.object({
+                id: z.number(),
+                nombre: z.string(),
+                monto: z.number(),
+                updatedAt: z.string(),
+            })
+        )
     })
 })

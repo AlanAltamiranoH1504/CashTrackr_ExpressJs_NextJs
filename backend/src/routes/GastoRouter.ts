@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get("/prueba", prueba);
 router.get("", usuarioEnSesionMiddleware, findAll);
-router.get("/presupuesto/:idPresupuesto", usuarioEnSesionMiddleware, validacionExistenciaPresupuestoRelacion, findByPresupuestoId);
+router.get("/presupuesto/:idPresupuesto", usuarioEnSesionMiddleware, findByPresupuestoId);
 router.get("/:id", usuarioEnSesionMiddleware, findByIdRequest, findById);
 router.post("", usuarioEnSesionMiddleware, saveGasto, validacionExistenciaPresupuestoRelacion, save);
 router.put("/:id", usuarioEnSesionMiddleware, findByIdRequest, validacionExistenciaPresupuestoRelacion, updateGastoRequest, update);
