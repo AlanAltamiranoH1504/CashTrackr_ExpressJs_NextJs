@@ -30,7 +30,7 @@ const save = async (req, res) => {
         return res.status(201).json({
             success: "Confirma tu cuenta en tu email",
         })
-    }catch (e) {
+    } catch (e) {
         return res.status(500).json({
             error: "Error en el registro de usuario",
             message: e.message
@@ -62,7 +62,7 @@ const reestablecerPassword = async (req, res) => {
         return res.status(200).json({
             success: "Password actualizada correctamente"
         });
-    }catch (e) {
+    } catch (e) {
         return res.status(500).json({
             error: "Error en actualizacion de password",
             message: e.message
@@ -84,7 +84,7 @@ const checkPassword = async (req, res) => {
         return res.status(200).json({
             success: "Password correcta"
         });
-    }catch (e) {
+    } catch (e) {
         return res.status(500).json({
             error: "Error en check de password",
             message: e.message
@@ -92,9 +92,31 @@ const checkPassword = async (req, res) => {
     }
 }
 
+const updateInformacionUsuario = async (req, res) => {
+    try {
+        const idSesion = req.usuario.id;
+        const usuarioToUpdate = await Usuario.findByPk(idSesion);
+
+        usuarioToUpdate.nombre = req.body.nombre;
+        usuarioToUpdate.apellidos = req.body.apellidos;
+        usuarioToUpdate.email = req.body.email;
+        await usuarioToUpdate.save();
+
+        return res.status(200).json({
+            sucesss: "Perfil de usuario actualizado correctamente",
+        });
+    } catch (e) {
+        return res.status(500).json({
+            error: "Error en actualizacion de datos de usuario",
+            message: e.message
+        });
+    }
+}
+
 export {
     prueba,
     save,
     reestablecerPassword,
-    checkPassword
+    checkPassword,
+    updateInformacionUsuario
 }
