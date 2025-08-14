@@ -50,3 +50,8 @@ export type FormSaveGastoWithPresupuestoId = {
     monto: number,
     presupuestoId: number
 }
+
+export type FormResetPasswordAuth = {
+    passwordOld: string,
+    newPassword: string,
+}

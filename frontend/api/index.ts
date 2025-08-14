@@ -1,7 +1,7 @@
 import {
     FormLoginUser,
     FormOlvidePassword,
-    FormResetPassword, FormSaveGastoWithPresupuestoId,
+    FormResetPassword, FormResetPasswordAuth, FormSaveGastoWithPresupuestoId,
     FormTokenConfirmacionCuenta, GastoDB, GastoToUpdate, PresupuestoToSave, PresupuestoToUpdate,
     UsuarioToSave
 } from "../types";
@@ -9,7 +9,7 @@ import axios from "axios";
 import {
     loginSuccessSchema,
     responseFindAllPresupuestosSchema, responseFindByIdPresupuestoSchema, responseFindGastoByIdSchema,
-    responseSavePresupuestoSchema, responseUpdateGastoByIdSchema,
+    responseSavePresupuestoSchema, responseUpdateGastoByIdSchema, responseUpdatePasswordAuthSchema,
     usuarioEnSesionSchema
 } from "../schemas";
 
@@ -273,6 +273,23 @@ export async function deleteGastoByIdDelete(id: number) {
                 "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
             }
         });
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function resetePasswordAuthPUT(data: FormResetPasswordAuth) {
+    try {
+        const url = `http://localhost:3000/usuarios/reset-password`;
+        const responseAPI = await axios.put(url, data, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            }
+        });
+        const resultAPI = responseUpdatePasswordAuthSchema.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data;
+        }
     } catch (e) {
         throw e;
     }

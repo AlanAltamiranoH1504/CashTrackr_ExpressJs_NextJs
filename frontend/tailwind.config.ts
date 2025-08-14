@@ -12,10 +12,12 @@ const config: Config = {
                 "auth": "url('/grafico.svg')"
             },
             backgroundSize: {
-                '30' : "30rem"
+                '30': "30rem"
             }
         },
     },
-    plugins: [],
+    plugins: [
+        require("@tailwindcss/forms")
+    ],
 };
 export default config;
