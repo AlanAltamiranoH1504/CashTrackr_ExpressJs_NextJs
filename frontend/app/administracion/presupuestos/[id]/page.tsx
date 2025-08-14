@@ -8,6 +8,8 @@ import AgregarGastoBoton from "../../../components/gastos/AgregarGastoBoton";
 import ModalContainer from "../../../components/ui/ModalContainer";
 import {formatoFecha, formatoMoneda} from "../../../../src/helpers";
 import ExpenseMenu from "../../../components/gastos/ExpenseMenu";
+import Cantidades from "../../../components/ui/Cantidades";
+import GraficaProgreso from "../../../components/presupuestos/GraficaProgreso";
 
 type DetallesPresupuestoProps = {
     params: { id: number }
@@ -31,6 +33,13 @@ const DetallesPresupuestoPage = ({params}: DetallesPresupuestoProps) => {
     }
 
     // @ts-ignore
+    const totalGastado: number = data?.presupuesto.gastos.reduce((acumulador, gasto) => {
+        return acumulador = acumulador + gasto.monto
+    }, 0);
+    // @ts-ignore
+    const procentajeGastado = ((totalGastado / data?.presupuesto.monto) * 100).toFixed(2);
+
+    // @ts-ignore
     return (
         <>
             <div className='flex justify-between items-center'>
@@ -39,11 +48,23 @@ const DetallesPresupuestoPage = ({params}: DetallesPresupuestoProps) => {
                     <p className="text-xl font-bold">Administra tus {''} <span className="text-amber-500">gastos</span>
                     </p>
                 </div>
-
                 <AgregarGastoBoton/>
             </div>
             {data?.presupuesto.gastos.length ? (
                 <>
+                    <div className="md:flex md:flex-row justify-around items-center align-middle my-10">
+                        <div>
+                            <GraficaProgreso
+                                porcentajeGastado={Number(procentajeGastado)}
+                            />
+                        </div>
+                        <div>
+                            <Cantidades
+                                presupuesto={data.presupuesto}
+                            />
+                        </div>
+                    </div>
+
                     <h1 className="text-3xl text-purple-950 mt-10">Gastos en este presupuesto:</h1>
                     <ul role="list" className="divide-y divide-gray-300 border shadow-lg mt-10 ">
                         {data.presupuesto.gastos.map((expense) => (
