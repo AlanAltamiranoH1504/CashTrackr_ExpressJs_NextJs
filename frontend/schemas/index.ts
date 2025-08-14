@@ -75,3 +75,7 @@ export const responseUpdateGastoByIdSchema = z.object({
 export const responseUpdatePasswordAuthSchema = z.object({
     success: z.string()
 });
+
+export const responseUpdateInformacionUsuarioSchema = z.object({
+    success: z.string()
+});

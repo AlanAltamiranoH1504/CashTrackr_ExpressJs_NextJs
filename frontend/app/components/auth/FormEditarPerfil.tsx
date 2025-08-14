@@ -1,14 +1,17 @@
 "use client"
 import {useForm} from "react-hook-form";
 import {FormUpdatePerfil} from "../../../types";
-import {useQuery, useQueryClient} from "@tanstack/react-query";
-import {usuarioEnSesionGET} from "../../../api";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {resetInformacionUsuarioPUT, usuarioEnSesionGET} from "../../../api";
 import {useEffect} from "react";
 import Cargando from "../ux/Cargando";
 import Error404 from "../ux/404Error";
+import {toast} from "react-toastify";
+import {useRouter} from "next/navigation";
 
 const FormEditarPerfil = () => {
-    const {register, handleSubmit, formState: {errors}, reset} = useForm<FormUpdatePerfil>()
+    const {register, handleSubmit, formState: {errors}, reset} = useForm<FormUpdatePerfil>();
+    const router = useRouter();
     const {data, isLoading, isError} = useQuery({
         queryKey: ["usuarioEnSesion"],
         queryFn: () => usuarioEnSesionGET(localStorage.getItem("toke_cashTrackr")),
@@ -17,8 +20,21 @@ const FormEditarPerfil = () => {
     });
 
     function updatePerfilUsuario(data: FormUpdatePerfil) {
-
+        updateInformacioUsuarioMutation.mutate(data);
     }
+
+    const updateInformacioUsuarioMutation = useMutation({
+        mutationKey: ["updateInformacionUsuario"],
+        mutationFn: resetInformacionUsuarioPUT,
+        onSuccess: (data) => {
+            toast.success("Información actualizada!")
+            router.push("/administracion");
+        },
+        onError: (error) => {
+            // @ts-ignore
+            toast.error(error.response.data.error);
+        }
+    })
 
     useEffect(() => {
         reset({
@@ -103,7 +119,7 @@ const FormEditarPerfil = () => {
                 <input
                     type="submit"
                     value='Guardar Cambios'
-                    className="bg-purple-950 hover:bg-purple-800 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer"
+                    className="bg-purple-950 transition-colors duration-500 hover:bg-purple-800 w-full p-3 rounded-lg text-white font-black  text-xl cursor-pointer"
                 />
             </form>
         </>

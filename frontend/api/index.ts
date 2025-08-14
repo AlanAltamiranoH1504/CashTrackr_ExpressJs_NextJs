@@ -2,14 +2,19 @@ import {
     FormLoginUser,
     FormOlvidePassword,
     FormResetPassword, FormResetPasswordAuth, FormSaveGastoWithPresupuestoId,
-    FormTokenConfirmacionCuenta, GastoDB, GastoToUpdate, PresupuestoToSave, PresupuestoToUpdate,
+    FormTokenConfirmacionCuenta, FormUpdatePerfil, GastoDB, GastoToUpdate, PresupuestoToSave, PresupuestoToUpdate,
     UsuarioToSave
 } from "../types";
 import axios from "axios";
 import {
     loginSuccessSchema,
-    responseFindAllPresupuestosSchema, responseFindByIdPresupuestoSchema, responseFindGastoByIdSchema,
-    responseSavePresupuestoSchema, responseUpdateGastoByIdSchema, responseUpdatePasswordAuthSchema,
+    responseFindAllPresupuestosSchema,
+    responseFindByIdPresupuestoSchema,
+    responseFindGastoByIdSchema,
+    responseSavePresupuestoSchema,
+    responseUpdateGastoByIdSchema,
+    responseUpdateInformacionUsuarioSchema,
+    responseUpdatePasswordAuthSchema,
     usuarioEnSesionSchema
 } from "../schemas";
 
@@ -287,6 +292,23 @@ export async function resetePasswordAuthPUT(data: FormResetPasswordAuth) {
             }
         });
         const resultAPI = responseUpdatePasswordAuthSchema.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            return resultAPI.data;
+        }
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function resetInformacionUsuarioPUT(data: FormUpdatePerfil) {
+    try {
+        const url = `http://localhost:3000/usuarios/reset-data-user`;
+        const responseAPI = await axios.put(url, data, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("toke_cashTrackr")
+            }
+        });
+        const resultAPI = responseUpdateInformacionUsuarioSchema.safeParse(responseAPI.data);
         if (resultAPI.success) {
             return resultAPI.data;
         }
