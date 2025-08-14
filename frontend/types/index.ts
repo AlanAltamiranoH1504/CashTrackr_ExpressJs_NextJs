@@ -55,3 +55,9 @@ export type FormResetPasswordAuth = {
     passwordOld: string,
     newPassword: string,
 }
+
+export type FormUpdatePerfil = {
+    nombre: string,
+    apellidos: string,
+    email: string
+}
